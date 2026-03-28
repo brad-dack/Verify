@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AML Compliance for Real Estate Agents</title>
-<meta name="description" content="AML compliance built for small to medium Australian real estate agencies. Simple, affordable, and ready before July 1.">
+<title>Verify by Four Foxes — AML Compliance for Real Estate Agents</title>
+<meta name="description" content="AML compliance for small to medium Australian real estate agencies. Pay per check, no subscriptions. Ready before July 1, 2026.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Verify by Four Foxes — AML Compliance for Real Estate Agents">
+<meta property="og:description" content="Pay per check. No subscriptions. No lock-in. AML compliance built for small to medium real estate agencies.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://verify.fourfoxes.com.au">
+<link rel="canonical" href="https://verify.fourfoxes.com.au">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -45,7 +51,7 @@
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border);
     padding: 0 2rem;
-    height: 60px;
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -59,9 +65,7 @@
     letter-spacing: -0.01em;
   }
 
-  .nav-logo span {
-    color: var(--teal);
-  }
+  .nav-logo span { color: var(--teal); }
 
   .nav-links {
     display: flex;
@@ -75,6 +79,9 @@
     font-size: 14px;
     font-weight: 400;
     transition: color 0.2s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
   }
 
   .nav-link:hover { color: var(--navy); }
@@ -82,28 +89,42 @@
   .nav-cta {
     background: var(--navy);
     color: var(--white);
-    padding: 8px 20px;
+    padding: 10px 22px;
     border-radius: 6px;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
     transition: background 0.2s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
   }
 
   .nav-cta:hover { background: var(--navy-mid); }
 
-  /* SECTIONS */
-  section { padding: 96px 2rem; }
+  section { padding: 100px 2rem; }
   .container { max-width: 720px; margin: 0 auto; }
-  .container-wide { max-width: 900px; margin: 0 auto; }
 
-  /* HERO */
+  /* HERO — dot grid */
   #hero {
-    padding-top: 140px;
-    padding-bottom: 96px;
-    background: var(--sand);
+    padding-top: 148px;
+    padding-bottom: 100px;
+    background-color: var(--sand);
+    background-image: radial-gradient(circle, #c8c4bc 1px, transparent 1px);
+    background-size: 24px 24px;
     border-bottom: 1px solid var(--border);
+    position: relative;
   }
+
+  #hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(245,242,236,0.4) 0%, rgba(245,242,236,0.85) 60%, rgba(245,242,236,1) 100%);
+    pointer-events: none;
+  }
+
+  #hero .container { position: relative; z-index: 1; }
 
   .deadline-badge {
     display: inline-flex;
@@ -126,11 +147,17 @@
     border-radius: 50%;
     background: var(--teal);
     flex-shrink: 0;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
   }
 
   h1 {
     font-family: 'DM Serif Display', serif;
-    font-size: clamp(36px, 6vw, 56px);
+    font-size: clamp(36px, 6vw, 54px);
     line-height: 1.1;
     color: var(--navy);
     letter-spacing: -0.02em;
@@ -141,57 +168,42 @@
   .hero-sub {
     font-size: 18px;
     color: var(--text-mid);
-    line-height: 1.7;
+    line-height: 1.75;
     max-width: 520px;
-    margin-bottom: 2.5rem;
     font-weight: 300;
   }
 
-  .hero-actions {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    background: var(--navy);
-    color: var(--white);
-    padding: 14px 28px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    transition: background 0.2s, transform 0.15s;
-    display: inline-block;
-  }
-
-  .btn-primary:hover { background: var(--navy-mid); transform: translateY(-1px); }
-
   .hero-price-block {
     display: inline-flex;
-    align-items: baseline;
-    gap: 10px;
+    align-items: center;
+    gap: 16px;
     background: var(--white);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    margin-top: 1.75rem;
+    border-radius: 14px;
+    padding: 1.1rem 1.75rem;
+    margin-top: 2rem;
+    box-shadow: 0 1px 4px rgba(15,31,56,0.06);
   }
 
   .hero-price-amount {
     font-family: 'DM Serif Display', serif;
-    font-size: 48px;
+    font-size: 52px;
     color: var(--navy);
     line-height: 1;
     letter-spacing: -0.02em;
+  }
+
+  .hero-price-divider {
+    width: 1px;
+    height: 44px;
+    background: var(--border);
   }
 
   .hero-price-label {
     font-size: 14px;
     color: var(--text-light);
     font-weight: 300;
-    line-height: 1.4;
+    line-height: 1.5;
   }
 
   .hero-price-label strong {
@@ -199,10 +211,41 @@
     color: var(--teal);
     font-weight: 500;
     font-size: 13px;
+    margin-bottom: 2px;
   }
 
-  /* PROBLEM */
-  #problem { background: var(--white); }
+  /* CALLOUT STRIP */
+  .callout-strip {
+    background: var(--navy);
+    padding: 1.25rem 2rem;
+    text-align: center;
+  }
+
+  .callout-strip p {
+    color: rgba(255,255,255,0.8);
+    font-size: 15px;
+    font-weight: 300;
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  .callout-strip p strong {
+    color: var(--teal-mid);
+    font-weight: 500;
+  }
+
+  /* PROBLEM — diagonal lines */
+  #problem {
+    background-color: var(--white);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(226,221,214,0.3) 20px,
+      rgba(226,221,214,0.3) 21px
+    );
+  }
 
   .eyebrow {
     font-size: 11px;
@@ -260,14 +303,130 @@
     line-height: 1.6;
   }
 
-  /* FEATURES */
-  #features { background: var(--sand); }
+  /* PRICING — teal top border */
+  #pricing {
+    background: var(--white);
+    border-top: 3px solid var(--teal);
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .pricing-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem;
+    background: var(--white);
+  }
+
+  .pricing-card.featured {
+    border-color: var(--navy);
+    background: var(--navy);
+  }
+
+  .plan-name {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+  }
+
+  .pricing-card.featured .plan-name { color: rgba(255,255,255,0.5); }
+
+  .plan-price {
+    font-family: 'DM Serif Display', serif;
+    font-size: 44px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+
+  .pricing-card.featured .plan-price { color: var(--white); }
+
+  .plan-sub {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 1.75rem;
+  }
+
+  .pricing-card.featured .plan-sub { color: rgba(255,255,255,0.45); }
+
+  .plan-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .plan-features li {
+    font-size: 14px;
+    color: var(--text-mid);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+
+  .pricing-card.featured .plan-features li { color: rgba(255,255,255,0.8); }
+
+  .plan-features li::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    border: 1.5px solid var(--teal);
+    margin-top: 2px;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%231a7f6e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .pricing-card.featured .plan-features li::before {
+    background-color: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.4);
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  .pricing-callout {
+    margin-top: 2rem;
+    background: var(--teal-light);
+    border: 1px solid var(--teal-mid);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    font-size: 15px;
+    color: var(--teal);
+    line-height: 1.65;
+  }
+
+  .pricing-callout strong { font-weight: 500; }
+
+  .pricing-note {
+    margin-top: 1rem;
+    font-size: 13px;
+    color: var(--text-light);
+    text-align: center;
+  }
+
+  /* HOW IT WORKS — soft teal glow */
+  #features {
+    background-color: var(--sand);
+    background-image:
+      radial-gradient(ellipse at 80% 20%, rgba(26,127,110,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(15,31,56,0.04) 0%, transparent 60%);
+  }
 
   .feature-list {
-    display: grid;
-    gap: 0;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
     margin-top: 3rem;
   }
@@ -314,116 +473,66 @@
     line-height: 1.65;
   }
 
-  /* PRICING */
-  #pricing { background: var(--white); }
+  /* SCREENSHOTS */
+  #screenshots {
+    background: var(--white);
+    padding-top: 0;
+    padding-bottom: 80px;
+  }
 
-  .pricing-grid {
+  .screenshot-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    margin-top: 3rem;
+    margin-top: 0;
   }
 
-  .pricing-card {
+  .screenshot-frame {
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 2rem;
+    overflow: hidden;
+    background: var(--sand);
+  }
+
+  .screenshot-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .screenshot-caption {
+    padding: 0.75rem 1rem;
+    font-size: 13px;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
     background: var(--white);
   }
 
-  .pricing-card.featured {
-    border-color: var(--navy);
-    background: var(--navy);
-    color: var(--white);
+  /* ABOUT — navy with grid */
+  #about {
+    background-color: var(--navy);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 
-  .plan-name {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-light);
-    margin-bottom: 1rem;
-  }
-
-  .pricing-card.featured .plan-name { color: rgba(255,255,255,0.55); }
-
-  .plan-price {
-    font-family: 'DM Serif Display', serif;
-    font-size: 40px;
-    color: var(--navy);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .pricing-card.featured .plan-price { color: var(--white); }
-
-  .plan-sub {
-    font-size: 13px;
-    color: var(--text-light);
-    margin-bottom: 1.75rem;
-  }
-
-  .pricing-card.featured .plan-sub { color: rgba(255,255,255,0.5); }
-
-  .plan-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .plan-features li {
-    font-size: 14px;
-    color: var(--text-mid);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .pricing-card.featured .plan-features li { color: rgba(255,255,255,0.8); }
-
-  .plan-features li::before {
-    content: '';
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--teal-light);
-    border: 1.5px solid var(--teal);
-    flex-shrink: 0;
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%231a7f6e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .pricing-card.featured .plan-features li::before {
-    background-color: rgba(255,255,255,0.15);
-    border-color: rgba(255,255,255,0.4);
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  }
-
-  .pricing-note {
-    margin-top: 1.5rem;
-    font-size: 13px;
-    color: var(--text-light);
-    text-align: center;
-  }
-
-  /* ABOUT */
-  #about { background: var(--sand); }
+  #about .eyebrow { color: var(--teal-mid); }
+  #about h2 { color: var(--white); }
+  #about .section-divider { background: var(--teal-mid); }
 
   .about-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
     padding: 2.5rem;
-    background: var(--white);
+    background: rgba(255,255,255,0.05);
     margin-top: 2rem;
   }
 
   .about-card p {
     font-size: 16px;
-    color: var(--text-mid);
-    line-height: 1.8;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.85;
     font-weight: 300;
   }
 
@@ -432,109 +541,137 @@
   .about-sig {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid rgba(255,255,255,0.1);
     font-size: 14px;
-    color: var(--text-light);
+    color: rgba(255,255,255,0.4);
   }
 
   .about-sig strong {
     display: block;
-    color: var(--navy);
+    color: var(--white);
     font-weight: 500;
     font-size: 15px;
+    margin-bottom: 2px;
   }
 
-  /* WAITLIST */
-  #waitlist {
-    background: var(--navy);
-    color: var(--white);
+  /* CONTACT — dot grid matching hero */
+  #contact {
+    background-color: var(--sand);
+    background-image: radial-gradient(circle, #c8c4bc 1px, transparent 1px);
+    background-size: 24px 24px;
+    position: relative;
   }
 
-  #waitlist .eyebrow { color: var(--teal-mid); }
-  #waitlist h2 { color: var(--white); }
+  #contact::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(245,242,236,0.75);
+    pointer-events: none;
+  }
 
-  .waitlist-sub {
-    font-size: 17px;
-    color: rgba(255,255,255,0.65);
+  #contact .container { position: relative; z-index: 1; }
+
+  .contact-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem;
+    box-shadow: 0 2px 16px rgba(15,31,56,0.07);
+  }
+
+  .contact-card h2 { margin-bottom: 0; }
+
+  .contact-sub {
+    font-size: 16px;
+    color: var(--text-mid);
     font-weight: 300;
-    max-width: 520px;
-    margin-bottom: 2.5rem;
     line-height: 1.75;
+    margin-top: 1rem;
+    margin-bottom: 2.5rem;
   }
 
-  .waitlist-form {
+  .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    max-width: 480px;
+    gap: 14px;
   }
 
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 14px;
   }
 
-  .waitlist-form input {
+  .contact-form input,
+  .contact-form textarea {
     width: 100%;
-    padding: 13px 16px;
+    padding: 14px 16px;
     border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.08);
-    color: var(--white);
+    border: 1px solid var(--border);
+    background: var(--sand);
+    color: var(--text);
     font-family: 'DM Sans', sans-serif;
     font-size: 15px;
     outline: none;
     transition: border-color 0.2s, background 0.2s;
+    min-height: 44px;
   }
 
-  .waitlist-form input::placeholder { color: rgba(255,255,255,0.35); }
-  .waitlist-form input:focus {
-    border-color: rgba(255,255,255,0.4);
-    background: rgba(255,255,255,0.12);
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: var(--teal);
+    background: var(--white);
   }
 
-  .btn-waitlist {
-    background: var(--teal);
+  .contact-form textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.6;
+  }
+
+  .btn-contact {
+    background: var(--navy);
     color: var(--white);
     border: none;
-    padding: 14px 28px;
+    padding: 16px 28px;
     border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s, transform 0.15s;
     width: 100%;
-    margin-top: 4px;
+    margin-top: 6px;
+    min-height: 52px;
   }
 
-  .btn-waitlist:hover { background: #158a77; transform: translateY(-1px); }
+  .btn-contact:hover { background: var(--navy-mid); transform: translateY(-1px); }
 
   .form-reassurance {
     font-size: 13px;
-    color: rgba(255,255,255,0.4);
-    margin-top: 8px;
+    color: var(--text-light);
+    text-align: center;
+    margin-top: 4px;
   }
 
-  /* SUCCESS STATE */
   .success-msg {
     display: none;
-    background: rgba(26,127,110,0.2);
-    border: 1px solid var(--teal);
-    border-radius: 8px;
+    background: var(--teal-light);
+    border: 1px solid var(--teal-mid);
+    border-radius: 10px;
     padding: 1.25rem 1.5rem;
-    color: var(--teal-mid);
+    color: var(--teal);
     font-size: 15px;
     margin-top: 1rem;
+    line-height: 1.6;
   }
 
   /* FOOTER */
   footer {
     background: var(--navy);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding: 2rem;
-    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 2.5rem 2rem;
   }
 
   .footer-inner {
@@ -559,6 +696,7 @@
   .footer-links {
     display: flex;
     gap: 1.5rem;
+    flex-wrap: wrap;
   }
 
   .footer-links a {
@@ -566,20 +704,23 @@
     color: rgba(255,255,255,0.4);
     text-decoration: none;
     transition: color 0.2s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
   }
 
-  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+  .footer-links a:hover { color: rgba(255,255,255,0.75); }
 
   .footer-copy {
     font-size: 12px;
-    color: rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.2);
     margin-top: 1.5rem;
     max-width: 720px;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
   }
 
-  /* DIVIDER LINE */
   .section-divider {
     width: 40px;
     height: 2px;
@@ -587,50 +728,32 @@
     margin-bottom: 1.5rem;
   }
 
-  /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .hero-content > * {
-    animation: fadeUp 0.6s ease both;
-  }
-
+  .hero-content > * { animation: fadeUp 0.6s ease both; }
   .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
   .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
   .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
   .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
 
-  /* RESPONSIVE */
   @media (max-width: 640px) {
     nav { padding: 0 1.25rem; }
     section { padding: 72px 1.25rem; }
-    #hero { padding-top: 110px; }
+    #hero { padding-top: 112px; }
+    #screenshots { padding-left: 1.25rem; padding-right: 1.25rem; }
     .pain-grid { grid-template-columns: 1fr; }
     .pricing-grid { grid-template-columns: 1fr; }
+    .screenshot-grid { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
     .footer-inner { flex-direction: column; text-align: center; }
     .footer-links { justify-content: center; }
+    .contact-card { padding: 2rem 1.25rem; }
+    .hero-price-block { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .hero-price-divider { display: none; }
   }
-/* CONTACT CONVERSION BLOCK */
-#contact {
-  background: var(--sand);
-}
-
-.contact-card {
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2.5rem;
-  max-width: 560px;
-  margin: 0 auto;
-}
-
-/* (rest of the CSS I gave you) */
- #contact .form-reassurance {
-  color: var(--text-mid);
-}
 </style>
 </head>
 <body>
@@ -648,19 +771,25 @@
 <section id="hero">
   <div class="container">
     <div class="hero-content">
-      <div class="deadline-badge">AML laws take effect 1 July 2025</div>
+      <div class="deadline-badge">AML laws take effect 1 July 2026</div>
       <h1>AML compliance for small to medium sized agencies. Simple, affordable, done.</h1>
-      <p class="hero-sub">Real estate agents must comply with Australia's Anti-Money Laundering laws from July 1. Verify with Four Foxes has no subscriptions, pay per check - all without the enterprise price tag.</p>
+      <p class="hero-sub">Real estate agents must comply with Australia's Anti-Money Laundering laws from July 1. Verify with Four Foxes has no subscriptions, pay per check — all without the enterprise price tag.</p>
       <div class="hero-price-block">
         <div class="hero-price-amount">$12.50</div>
+        <div class="hero-price-divider"></div>
         <div class="hero-price-label">
-          per check<br>
           <strong>No subscriptions. No lock-in.</strong>
+          per KYC check · invoiced monthly
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- CALLOUT STRIP -->
+<div class="callout-strip">
+  <p>Think of it as a compliance cost you pass straight through to the transaction — <strong>not one that eats into your margin.</strong> Pay as you go, invoiced monthly — no subscription fees eating into your commission before settlement.</p>
+</div>
 
 <!-- PROBLEM -->
 <section id="problem">
@@ -668,29 +797,69 @@
     <div class="eyebrow">The problem</div>
     <div class="section-divider"></div>
     <h2>Most AML tools weren't built for you.</h2>
-    <p class="section-intro">The existing AML software market is built for big agencies and banks. Complex, expensive, and overkill for independent and boutique real estate businesses. You shouldn't need a compliance team to stay compliant.</p>
+    <p class="section-intro">AML checks are a legal requirement — not a negotiation. But the existing market is built for big agencies and banks: complex, expensive, and overkill for independent and boutique businesses. You shouldn't need a compliance team to stay compliant.</p>
     <div class="pain-grid">
       <div class="pain-item">
         <strong>Too expensive</strong>
-        <p>Enterprise tools cost hundreds per month - way more than a small agency needs.</p>
+        <p>Enterprise tools cost hundreds per month — way more than a small agency needs or should pay.</p>
       </div>
       <div class="pain-item">
         <strong>Too complicated</strong>
-        <p>Large end-to-end platforms are over-engineered for smaller businesses - you don't need a compliance team just to run a check.</p>
+        <p>Large end-to-end platforms are over-engineered for smaller businesses — you don't need a compliance team just to run a check.</p>
       </div>
       <div class="pain-item">
         <strong>Manual systems don't scale</strong>
-        <p>100% manual processes are too time consuming. There has to be a better way - and there is.</p>
+        <p>100% manual processes are too time consuming and leave you exposed. There has to be a better way — and there is.</p>
       </div>
       <div class="pain-item">
         <strong>Real penalties</strong>
-        <p>Non-compliance fines are serious - and "we didn't know" isn't a defence.</p>
+        <p>Non-compliance fines are serious — and "we didn't know" isn't a defence with AUSTRAC.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="eyebrow">Pricing</div>
+    <div class="section-divider"></div>
+    <h2>Straightforward pricing. No surprises.</h2>
+    <p class="section-intro">Priced for independent and boutique agencies — not franchises. Pass it through as a transaction cost and it doesn't cost your business a cent.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="plan-name">KYC / PEP / Sanction Check</div>
+        <div class="plan-price">$12.50</div>
+        <div class="plan-sub">per check · invoiced monthly</div>
+        <ul class="plan-features">
+          <li>Know Your Customer (KYC)</li>
+          <li>Politically Exposed Person (PEP) screening</li>
+          <li>Sanctions list check</li>
+          <li>Full audit trail included</li>
+          <li>Branded verification link</li>
+        </ul>
+      </div>
+      <div class="pricing-card featured">
+        <div class="plan-name">KYB — Know Your Business</div>
+        <div class="plan-price">$32.50</div>
+        <div class="plan-sub">per check · invoiced monthly</div>
+        <ul class="plan-features">
+          <li>Business entity verification</li>
+          <li>Beneficial ownership check</li>
+          <li>Full audit trail included</li>
+          <li>Branded verification link</li>
+          <li>KYC checks on beneficial owners included</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pricing-callout">
+      <strong>No subscriptions. No lock-in contracts.</strong> Pay only for the checks you run, invoiced at the end of each month — after the work is done.
+    </div>
+    <p class="pricing-note">Not sure which check you need? Contact us and we'll help you work it out.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
 <section id="features">
   <div class="container">
     <div class="eyebrow">How it works</div>
@@ -709,7 +878,7 @@
         <div class="feature-num">2</div>
         <div class="feature-content">
           <strong>Send a branded verification link</strong>
-          <p>Generate a link directly from Verify - branded with your agency's logo - and send it to your client. No paperwork, no back and forth.</p>
+          <p>Generate a link directly from Verify — branded with your agency's logo — and send it to your client. No paperwork, no back and forth.</p>
         </div>
       </div>
       <div class="feature-item">
@@ -730,47 +899,26 @@
         <div class="feature-num">5</div>
         <div class="feature-content">
           <strong>Pay only for what you use</strong>
-          <p>No upfront subscriptions. Checks are invoiced monthly - you pay per check, so your costs match your actual workload.</p>
+          <p>No upfront subscriptions. Checks are invoiced monthly — you pay per check, so your costs match your actual workload.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
-<section id="pricing">
+<!-- SCREENSHOTS -->
+<section id="screenshots">
   <div class="container">
-    <div class="eyebrow">Pricing</div>
-    <div class="section-divider"></div>
-    <h2>Straightforward pricing. No surprises.</h2>
-    <p class="section-intro">Priced for independent and boutique agencies - not franchises.</p>
-    <div class="pricing-grid">
-      <div class="pricing-card">
-        <div class="plan-name">KYC / PEP / Sanction Check</div>
-        <div class="plan-price">$12.50</div>
-        <div class="plan-sub">per check · invoiced monthly</div>
-        <ul class="plan-features">
-          <li>Know Your Customer (KYC)</li>
-          <li>Politically Exposed Person (PEP) screening</li>
-          <li>Sanctions list check</li>
-          <li>Full audit trail included</li>
-          <li>Branded verification link</li>
-        </ul>
+    <div class="screenshot-grid">
+      <div class="screenshot-frame">
+        <img src="image1.png" alt="Verify app — client verification link screen" loading="lazy" width="600" height="400">
+        <div class="screenshot-caption">Sending a branded verification link to your client</div>
       </div>
-      <div class="pricing-card featured">
-        <div class="plan-name">KYB - Know Your Business</div>
-        <div class="plan-price">$32.50</div>
-        <div class="plan-sub">per check · invoiced monthly</div>
-        <ul class="plan-features">
-          <li>Business entity verification</li>
-          <li>Beneficial ownership check</li>
-          <li>Full audit trail included</li>
-          <li>Branded verification link</li>
-          <li>Price includes KYC checks on beneficial owners</li>
-        </ul>
+      <div class="screenshot-frame">
+        <img src="image2.png" alt="Verify app — completed AML compliance report" loading="lazy" width="600" height="400">
+        <div class="screenshot-caption">Completed AML report with full audit trail</div>
       </div>
     </div>
-    <p class="pricing-note">No subscriptions. No lock-in contracts. Pay only for the checks you run, invoiced at the end of each month.</p>
   </div>
 </section>
 
@@ -781,8 +929,8 @@
     <div class="section-divider"></div>
     <h2>Built by someone who understands small business.</h2>
     <div class="about-card">
-      <p>Verify is built by Four Foxes Consulting. We saw small agencies being left behind by compliance software that's too big, too expensive, and too complicated - so we built the version we wish existed.</p>
-      <p>I'm passionate about small business and finding operational efficiencies that actually make a difference day to day. I've seen what good processes look like at scale - having been part of the team that built the operations and processes of an ASX-listed company - and I believe smaller businesses deserve the same quality tools, without the enterprise complexity or cost.</p>
+      <p>Verify is built by Four Foxes Consulting. We saw small agencies being left behind by compliance software that's too big, too expensive, and too complicated — so we built the version we wish existed.</p>
+      <p>I'm passionate about small business and finding operational efficiencies that actually make a difference day to day. I've seen what good processes look like at scale — having been part of the team that built the operations and processes of an ASX-listed company — and I believe smaller businesses deserve the same quality tools, without the enterprise complexity or cost.</p>
       <div class="about-sig">
         <strong>[Your name]</strong>
         Founder, Four Foxes Consulting
@@ -794,61 +942,49 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
-    
     <div class="contact-card">
       <div class="eyebrow">Get in touch</div>
       <div class="section-divider"></div>
-
       <h2>July 1 is closer than it looks.</h2>
-
-      <p class="contact-sub">
-        If you want a simple, low-cost way to stay compliant before the deadline, send a quick message below. 
-        We’ll reply personally and show you exactly how Verify would work for your agency.
-      </p>
-    </p>
+      <p class="contact-sub">If you want a simple, low-cost way to stay compliant before the deadline, send a quick message below. We'll reply personally and show you exactly how Verify would work for your agency.</p>
       <form class="contact-form" id="contactForm" action="https://formspree.io/f/mvzvzreb" method="POST">
-        
         <div class="form-row">
           <input type="text" name="name" placeholder="Your name" required>
           <input type="email" name="email" placeholder="Email address" required>
         </div>
-
         <input type="text" name="agency" placeholder="Agency name (optional)">
-
+        <textarea name="message" placeholder="Any questions? (optional)"></textarea>
         <button type="submit" class="btn-contact">Send message</button>
-
-        <p class="form-reassurance">
-        </p>
-          No spam. No sales pressure. Just a response from a real person within one business day.
-        </p>
-
+        <p class="form-reassurance">No spam. No sales pressure. A real response within one business day.</p>
       </form>
-
       <div class="success-msg" id="successMsg">
-        Thanks for reaching out - we’ll be in touch shortly.
+        Thanks for reaching out — we'll be in touch shortly with everything you need to get started.
       </div>
     </div>
-
   </div>
 </section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <a href="#" class="footer-logo">Verify <span>·</span> Four Foxes</a>
     <div class="footer-links">
-      <a href="#features">How it works</a>
       <a href="#pricing">Pricing</a>
+      <a href="#features">How it works</a>
       <a href="#contact">Contact Us</a>
       <a href="mailto:aml@fourfoxes.com.au">Email us</a>
     </div>
   </div>
-  <p class="footer-copy">© 2025 Four Foxes Consulting. ABN XX XXX XXX XXX · verify.fourfoxes.com.au</p>
+  <p class="footer-copy">© 2026 Four Foxes Consulting. ABN XX XXX XXX XXX · verify.fourfoxes.com.au</p>
 </footer>
 
 <script>
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    this.style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
+  document.getElementById('contactForm').addEventListener('submit', function() {
+    const form = this;
+    setTimeout(function() {
+      form.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    }, 100);
   });
 
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {

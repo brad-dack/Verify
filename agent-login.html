@@ -53,11 +53,14 @@
   </div>
 
   <script>
-    // Only declare Supabase once
-    const supabase = window.supabase.createClient(
-      "https://djvrdggtqabogzxtgleq.supabase.co",
-      "YOUR_ANON_KEY_HERE"
-    );
+    // Only create Supabase client once
+    if (!window.supabaseClient) {
+      window.supabaseClient = window.supabase.createClient(
+        "https://djvrdggtqabogzxtgleq.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqdnJkZ2d0cWFib2d6eHRnbGVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMzMxMTIsImV4cCI6MjA5MDYwOTExMn0.t2A2DcHpM78IIXO4en878aAASmKfvMkA75AhHwP5IMI"
+      );
+    }
+    const supabase = window.supabaseClient;
 
     async function login() {
       const email = document.getElementById("email").value.trim();
@@ -78,7 +81,7 @@
       }
     }
 
-    // Attach event listener after DOM is loaded
+    // Attach button event listener after DOM loads
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("loginButton").addEventListener("click", login);
     });

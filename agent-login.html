@@ -91,22 +91,28 @@
   </div>
 
   <script>
+    // Initialize Supabase client (replace YOUR_ANON_KEY_HERE)
     const supabase = window.supabase.createClient(
       "https://djvrdggtqabogzxtgleq.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqdnJkZ2d0cWFib2d6eHRnbGVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMzMxMTIsImV4cCI6MjA5MDYwOTExMn0.t2A2DcHpM78IIXO4en878aAASmKfvMkA75AhHwP5IMI"
+      "YOUR_ANON_KEY_HERE"
     );
 
+    // Login function triggered by button
     async function login() {
       const email = document.getElementById("email").value;
 
-      const { error } = await supabase.auth.signInWithOtp({
-        email: email
-      });
+      if (!email) {
+        alert("Please enter your email.");
+        return;
+      }
+
+      const { error } = await supabase.auth.signInWithOtp({ email });
 
       if (!error) {
         document.getElementById("success").style.display = "block";
         document.getElementById("error").style.display = "none";
       } else {
+        console.error(error);
         document.getElementById("error").style.display = "block";
       }
     }

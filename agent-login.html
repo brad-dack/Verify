@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Agent Verification Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Supabase library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .box {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #000;
+    }
+
+    .success {
+      margin-top: 15px;
+      color: green;
+      display: none;
+    }
+
+    .error {
+      margin-top: 15px;
+      color: red;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <h1>Agent Login</h1>
+    <p>Enter your email and we’ll send you a secure login link.</p>
+
+    <input type="email" id="email" placeholder="Enter your email address">
+    <button onclick="login()">Send Login Link</button>
+
+    <div class="success" id="success">Check your email for the login link.</div>
+    <div class="error" id="error">Something went wrong. Try again.</div>
+  </div>
+
+  <script>
+    const supabase = window.supabase.createClient(
+      "https://djvrdggtqabogzxtgleq.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqdnJkZ2d0cWFib2d6eHRnbGVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMzMxMTIsImV4cCI6MjA5MDYwOTExMn0.t2A2DcHpM78IIXO4en878aAASmKfvMkA75AhHwP5IMI"
+    );
+
+    async function login() {
+      const email = document.getElementById("email").value;
+
+      const { error } = await supabase.auth.signInWithOtp({
+        email: email
+      });
+
+      if (!error) {
+        document.getElementById("success").style.display = "block";
+        document.getElementById("error").style.display = "none";
+      } else {
+        document.getElementById("error").style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>

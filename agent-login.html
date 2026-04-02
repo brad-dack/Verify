@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <title>Agent Verification Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Supabase JS Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
+  
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,158 +13,205 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
     }
-
     .box {
       background: white;
       padding: 40px;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       text-align: center;
     }
-
-    h1 { 
-      margin-bottom: 10px; 
-      font-size: 24px; 
+    h1 {
+      margin-bottom: 8px;
+      font-size: 26px;
+      color: #111;
     }
-    
-    p { 
-      color: #555; 
-      margin-bottom: 25px; 
+    p {
+      color: #555;
+      margin-bottom: 25px;
+      line-height: 1.5;
     }
-
-    input { 
-      width: 100%; 
-      padding: 12px; 
-      margin-bottom: 15px; 
-      border-radius: 6px; 
-      border: 1px solid #ddd; 
-      font-size: 14px; 
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
       box-sizing: border-box;
     }
-
-    button { 
-      width: 100%; 
-      padding: 12px; 
-      background: #111; 
-      color: white; 
-      border: none; 
-      border-radius: 6px; 
-      font-size: 15px; 
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
-
-    button:hover:not(:disabled) { 
-      background: #000; 
+    button:hover:not(:disabled) {
+      background: #000;
     }
-
     button:disabled {
       background: #666;
       cursor: not-allowed;
     }
-
-    .success { 
-      margin-top: 15px; 
-      color: green; 
-      display: none; 
+    .success-box {
+      background: #f0fdf4;
+      color: #166534;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border: 1px solid #86efac;
     }
-
-    .error { 
-      margin-top: 15px; 
-      color: red; 
-      display: none; 
+    .welcome {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .loading {
+      color: #666;
+      font-style: italic;
+    }
+    .error {
+      color: #dc2626;
+      margin-top: 15px;
+      display: none;
     }
   </style>
 </head>
 <body>
-
-  <div class="box">
-    <h1>Agent Login</h1>
-    <p>Enter your email and we’ll send you a secure login link.</p>
-
-    <input type="email" id="email" placeholder="Enter your email address">
-    <button id="loginButton">Send Login Link</button>
-
-    <div class="success" id="success">Check your email for the login link.</div>
-    <div class="error" id="error">Something went wrong. Try again.</div>
+  <div class="box" id="mainBox">
+    <!-- Content will be dynamically switched here -->
   </div>
 
   <script>
-    // Initialize Supabase client (only once)
-    const supabaseClient = window.supabase.createClient(
+    // Initialize Supabase client
+    const supabase = window.supabase.createClient(
       "https://djvrdggtqabogzxtgleq.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqdnJkZ2d0cWFib2d6eHRnbGVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMzMxMTIsImV4cCI6MjA5MDYwOTExMn0.t2A2DcHpM78IIXO4en878aAASmKfvMkA75AhHwP5IMI"
     );
 
-    let isLoading = false;
+    const mainBox = document.getElementById("mainBox");
 
-    async function login() {
+    // Function to show the login form
+    function showLoginForm() {
+      mainBox.innerHTML = `
+        <h1>Agent Login</h1>
+        <p>Enter your email and we’ll send you a secure login link.</p>
+        <input type="email" id="email" placeholder="Enter your email address">
+        <button id="loginButton">Send Login Link</button>
+        <div class="success" id="success" style="display:none; color:green; margin-top:15px;">
+          Check your email for the login link.
+        </div>
+        <div class="error" id="error" style="display:none;">Something went wrong. Try again.</div>
+      `;
+
       const emailInput = document.getElementById("email");
-      const email = emailInput.value.trim();
-      const button = document.getElementById("loginButton");
+      const loginButton = document.getElementById("loginButton");
       const successDiv = document.getElementById("success");
       const errorDiv = document.getElementById("error");
 
-      // Reset messages
-      successDiv.style.display = "none";
-      errorDiv.style.display = "none";
+      async function sendLoginLink() {
+        const email = emailInput.value.trim();
+        if (!email) {
+          alert("Please enter your email address.");
+          return;
+        }
 
-      if (!email) {
-        alert("Please enter your email address.");
-        return;
+        loginButton.textContent = "Sending...";
+        loginButton.disabled = true;
+        successDiv.style.display = "none";
+        errorDiv.style.display = "none";
+
+        try {
+          const { error } = await supabase.auth.signInWithOtp({
+            email: email,
+            options: {
+              emailRedirectTo: window.location.origin + "/agent-verify.html"
+            }
+          });
+
+          if (!error) {
+            successDiv.style.display = "block";
+            emailInput.value = "";
+          } else {
+            console.error(error);
+            errorDiv.textContent = error.message || "Something went wrong. Try again.";
+            errorDiv.style.display = "block";
+          }
+        } catch (err) {
+          console.error(err);
+          errorDiv.style.display = "block";
+        } finally {
+          loginButton.textContent = "Send Login Link";
+          loginButton.disabled = false;
+        }
       }
 
-      if (isLoading) return;
+      loginButton.addEventListener("click", sendLoginLink);
+      emailInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendLoginLink();
+      });
+    }
 
-      // Show loading state
-      isLoading = true;
-      button.textContent = "Sending...";
-      button.disabled = true;
+    // Function to show welcome / logged-in state
+    function showWelcome(user) {
+      mainBox.innerHTML = `
+        <div class="success-box">
+          <div class="welcome">✅ Login Successful!</div>
+          <p>Welcome back, <strong>${user.email}</strong></p>
+        </div>
+        <button id="goToDashboard">Go to Verification Dashboard</button>
+        <button id="logoutBtn" style="background:#ef4444;">Logout</button>
+      `;
+
+      document.getElementById("goToDashboard").addEventListener("click", () => {
+        window.location.href = "/agent-dashboard.html"; // ← Change this to your actual dashboard page
+      });
+
+      document.getElementById("logoutBtn").addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        showLoginForm();
+      });
+    }
+
+    // Main initialization + check if user is already logged in
+    async function init() {
+      mainBox.innerHTML = `<p class="loading">Checking login status...</p>`;
 
       try {
-        const { error } = await supabaseClient.auth.signInWithOtp({
-          email: email,
-          options: {
-            emailRedirectTo: window.location.origin + "/agent-verify.html" // Optional: change if you have a verify page
-          }
-        });
+        const { data: { session }, error } = await supabase.auth.getSession();
 
-        if (!error) {
-          successDiv.style.display = "block";
-          emailInput.value = ""; // Clear input after success
+        if (session?.user) {
+          // User is logged in (magic link worked)
+          showWelcome(session.user);
         } else {
-          console.error("Supabase error:", error);
-          errorDiv.style.display = "block";
+          // No active session → show login form
+          showLoginForm();
         }
       } catch (err) {
-        console.error("Unexpected error:", err);
-        errorDiv.style.display = "block";
-      } finally {
-        // Reset button
-        isLoading = false;
-        button.textContent = "Send Login Link";
-        button.disabled = false;
+        console.error("Session check failed:", err);
+        showLoginForm();
       }
     }
 
-    // Attach event listener once DOM is loaded
-    document.addEventListener("DOMContentLoaded", () => {
-      const loginButton = document.getElementById("loginButton");
-      loginButton.addEventListener("click", login);
+    // Start the page
+    window.addEventListener("load", init);
 
-      // Optional: Allow pressing Enter in the email field
-      document.getElementById("email").addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          login();
-        }
-      });
+    // Also listen for auth changes (good practice for Supabase magic links)
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        showWelcome(session.user);
+      }
     });
   </script>
-
 </body>
 </html>

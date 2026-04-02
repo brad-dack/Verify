@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Agent Verification Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .header {
+      background: #111;
+      color: white;
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .main {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .welcome {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+    button {
+      padding: 12px 24px;
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #000;
+    }
+    .logout-btn {
+      background: #ef4444;
+    }
+    .logout-btn:hover {
+      background: #dc2626;
+    }
+    .loading {
+      text-align: center;
+      color: #666;
+      font-size: 18px;
+      padding: 40px;
+    }
+    .error {
+      color: #dc2626;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Agent Verification Portal</h1>
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+  </div>
+
+  <div class="main">
+    <div id="content">
+      <!-- Content loaded dynamically -->
+    </div>
+  </div>
+
+  <script>
+    // Initialize Supabase
+    const supabase = window.supabase.createClient(
+      "https://djvrdggtqabogzxtgleq.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqdnJkZ2d0cWFib2d6eHRnbGVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMzMxMTIsImV4cCI6MjA5MDYwOTExMn0.t2A2DcHpM78IIXO4en878aAASmKfvMkA75AhHwP5IMI"
+    );
+
+    const contentDiv = document.getElementById("content");
+
+    async function loadDashboard() {
+      contentDiv.innerHTML = `<div class="loading">Loading your dashboard...</div>`;
+
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+
+        if (error || !session?.user) {
+          // Not logged in → redirect back to login
+          window.location.href = "agent-login.html";
+          return;
+        }
+
+        const user = session.user;
+
+        // Show dashboard content
+        contentDiv.innerHTML = `
+          <div class="welcome">
+            <h2>Welcome back, ${user.email}</h2>
+            <p>You are now logged in to the Agent Verification Portal.</p>
+            <p><strong>Session ID:</strong> ${session.access_token.substring(0, 20)}...</p>
+          </div>
+
+          <div class="card">
+            <h3>Verification Tools</h3>
+            <p>Here you can manage your agent verifications, review applications, and more.</p>
+            
+            <div style="margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+              <button onclick="alert('Start New Verification - Feature coming soon')">Start New Verification</button>
+              <button onclick="alert('View My Verifications - Feature coming soon')">View My Verifications</button>
+              <button onclick="alert('Review Applications - Feature coming soon')">Review Applications</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Account Information</h3>
+            <p><strong>Email:</strong> ${user.email}</p>
+            <p><strong>Logged in since:</strong> ${new Date(session.expires_at * 1000).toLocaleString()}</p>
+            <p><strong>User ID:</strong> ${user.id}</p>
+          </div>
+        `;
+
+      } catch (err) {
+        console.error(err);
+        contentDiv.innerHTML = `<div class="error">Failed to load dashboard. Please try logging in again.</div>`;
+      }
+    }
+
+    // Logout function
+    async function logout() {
+      await supabase.auth.signOut();
+      window.location.href = "agent-login.html";
+    }
+
+    // Initialize page
+    window.addEventListener("load", () => {
+      loadDashboard();
+
+      // Attach logout button
+      document.getElementById("logoutBtn").addEventListener("click", logout);
+
+      // Listen for auth changes (in case user logs out elsewhere)
+      supabase.auth.onAuthStateChange((event) => {
+        if (event === 'SIGNED_OUT') {
+          window.location.href = "agent-login.html";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

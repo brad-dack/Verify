@@ -5,7 +5,7 @@
   <title>Agent Verification Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Supabase library -->
+  <!-- Supabase JS Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
   <style>
@@ -29,16 +29,60 @@
       text-align: center;
     }
 
-    h1 { margin-bottom: 10px; font-size: 24px; }
-    p { color: #555; margin-bottom: 25px; }
-    input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ddd; font-size: 14px; }
-    button { width: 100%; padding: 12px; background: #111; color: white; border: none; border-radius: 6px; font-size: 15px; cursor: pointer; }
-    button:hover { background: #000; }
-    .success { margin-top: 15px; color: green; display: none; }
-    .error { margin-top: 15px; color: red; display: none; }
+    h1 { 
+      margin-bottom: 10px; 
+      font-size: 24px; 
+    }
+    
+    p { 
+      color: #555; 
+      margin-bottom: 25px; 
+    }
+
+    input { 
+      width: 100%; 
+      padding: 12px; 
+      margin-bottom: 15px; 
+      border-radius: 6px; 
+      border: 1px solid #ddd; 
+      font-size: 14px; 
+      box-sizing: border-box;
+    }
+
+    button { 
+      width: 100%; 
+      padding: 12px; 
+      background: #111; 
+      color: white; 
+      border: none; 
+      border-radius: 6px; 
+      font-size: 15px; 
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    button:hover:not(:disabled) { 
+      background: #000; 
+    }
+
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
+    }
+
+    .success { 
+      margin-top: 15px; 
+      color: green; 
+      display: none; 
+    }
+
+    .error { 
+      margin-top: 15px; 
+      color: red; 
+      display: none; 
+    }
   </style>
 </head>
-
 <body>
 
   <div class="box">
@@ -53,37 +97,74 @@
   </div>
 
   <script>
-    // Only create Supabase client once
-    if (!window.supabaseClient) {
-      window.supabaseClient = window.supabase.createClient(
-        "https://djvrdggtqabogzxtgleq.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqdnJkZ2d0cWFib2d6eHRnbGVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMzMxMTIsImV4cCI6MjA5MDYwOTExMn0.t2A2DcHpM78IIXO4en878aAASmKfvMkA75AhHwP5IMI"
-      );
-    }
-    const supabase = window.supabaseClient;
+    // Initialize Supabase client (only once)
+    const supabaseClient = window.supabase.createClient(
+      "https://djvrdggtqabogzxtgleq.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqdnJkZ2d0cWFib2d6eHRnbGVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMzMxMTIsImV4cCI6MjA5MDYwOTExMn0.t2A2DcHpM78IIXO4en878aAASmKfvMkA75AhHwP5IMI"
+    );
+
+    let isLoading = false;
 
     async function login() {
-      const email = document.getElementById("email").value.trim();
+      const emailInput = document.getElementById("email");
+      const email = emailInput.value.trim();
+      const button = document.getElementById("loginButton");
+      const successDiv = document.getElementById("success");
+      const errorDiv = document.getElementById("error");
+
+      // Reset messages
+      successDiv.style.display = "none";
+      errorDiv.style.display = "none";
+
       if (!email) {
-        alert("Please enter your email.");
+        alert("Please enter your email address.");
         return;
       }
 
-      const { error } = await supabase.auth.signInWithOtp({ email });
+      if (isLoading) return;
 
-      if (!error) {
-        document.getElementById("success").style.display = "block";
-        document.getElementById("error").style.display = "none";
-      } else {
-        console.error(error);
-        document.getElementById("success").style.display = "none";
-        document.getElementById("error").style.display = "block";
+      // Show loading state
+      isLoading = true;
+      button.textContent = "Sending...";
+      button.disabled = true;
+
+      try {
+        const { error } = await supabaseClient.auth.signInWithOtp({
+          email: email,
+          options: {
+            emailRedirectTo: window.location.origin + "/agent-verify.html" // Optional: change if you have a verify page
+          }
+        });
+
+        if (!error) {
+          successDiv.style.display = "block";
+          emailInput.value = ""; // Clear input after success
+        } else {
+          console.error("Supabase error:", error);
+          errorDiv.style.display = "block";
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        errorDiv.style.display = "block";
+      } finally {
+        // Reset button
+        isLoading = false;
+        button.textContent = "Send Login Link";
+        button.disabled = false;
       }
     }
 
-    // Attach button event listener after DOM loads
+    // Attach event listener once DOM is loaded
     document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("loginButton").addEventListener("click", login);
+      const loginButton = document.getElementById("loginButton");
+      loginButton.addEventListener("click", login);
+
+      // Optional: Allow pressing Enter in the email field
+      document.getElementById("email").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          login();
+        }
+      });
     });
   </script>
 
